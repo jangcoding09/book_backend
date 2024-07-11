@@ -1,0 +1,8 @@
+const path = require('path');
+
+module.exports = {
+  'config': path.resolve('config', 'config.js'), // 데이터베이스 설정
+  'migrations-path': path.resolve('migrations'), // 마이그레이션 파일 경로
+  'models-path': path.resolve('models'), // 모델 파일 경로
+  'seeders-path': path.resolve('seeders') // 시더 파일 경로
+};
