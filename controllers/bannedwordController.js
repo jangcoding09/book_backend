@@ -1,12 +1,12 @@
-const { BannedWord, Comment } = require("../models");
+const { Bannedword, Comment } = require("../models");
 
 // Endpoint to add a new banned word
 const addBannedWord = async (req, res) => {
   try {
     const { word } = req.body;
-    await BannedWord.create({ word });
-    const bannedWords = await BannedWord.findAll();
-    res.status(201).json(bannedWords);
+    await Bannedword.create({ word });
+    const Bannedwords = await Bannedword.findAll();
+    res.status(201).json(Bannedwords);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -16,9 +16,9 @@ const addBannedWord = async (req, res) => {
 const deleteBannedWord = async (req, res) => {
   try {
     const { id } = req.params;
-    await BannedWord.destroy({ where: { id } });
-    const bannedWords = await BannedWord.findAll();
-    res.status(200).json(bannedWords);
+    await Bannedword.destroy({ where: { id } });
+    const bannedwords = await Bannedword.findAll();
+    res.status(200).json(bannedwords);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -27,8 +27,8 @@ const deleteBannedWord = async (req, res) => {
 // Endpoint to get all banned words
 const getBannedWords = async (req, res) => {
   try {
-    const bannedWords = await BannedWord.findAll();
-    res.status(200).json(bannedWords);
+    const bannedwords = await Bannedword.findAll();
+    res.status(200).json(bannedwords);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
