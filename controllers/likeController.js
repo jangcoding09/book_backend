@@ -1,4 +1,5 @@
 const { Like, Book } = require("../models");
+
 const getBookLike = async (req, res) => {
   try {
     const { bookId, id } = req.params;
@@ -35,7 +36,7 @@ const addLike = async (req, res) => {
 
   try {
     const { bookId, id } = req.params;
-    if (!bookId && !id) {
+    if (!bookId || !id) {
       console.error("Invalid bookId or userId", { bookId, id });
       throw new Error("Invalid bookId or userId");
     }
@@ -65,7 +66,6 @@ const addLike = async (req, res) => {
       );
     }
 
-    // 책의 likeCount를 증가시킴
     const book = await Book.findByPk(bookId, { transaction });
     book.likeCount += 1;
     await book.save({ transaction });
@@ -79,12 +79,13 @@ const addLike = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 const removeLike = async (req, res) => {
   const transaction = await Like.sequelize.transaction();
 
   try {
     const { bookId, id } = req.params;
-    if (!bookId && !id) {
+    if (!bookId || !id) {
       console.error("Invalid bookId or userId", { bookId, id });
       throw new Error("Invalid bookId or userId");
     }
@@ -99,20 +100,21 @@ const removeLike = async (req, res) => {
 
     if (like) {
       const userIds = like.userIds || [];
-      const userIndex = userIds.indexOf(id);
-      if (userIndex !== -1) {
-        userIds.splice(userIndex, 1);
-        like.userIds = userIds;
-        await like.save({ transaction });
-      }
+      console.log("Before removal:", userIds); // Debugging line
+      like.userIds = userIds.filter((userId) => userId !== id);
+      console.log("After removal:", like.userIds); // Debugging line
+      await like.save({ transaction });
 
-      // 책의 likeCount를 감소시킴
       const book = await Book.findByPk(bookId, { transaction });
       book.likeCount -= 1;
       await book.save({ transaction });
-    }
 
-    await transaction.commit();
+      await transaction.commit();
+
+      // 트랜잭션 커밋 후 데이터 확인
+      const updatedLike = await Like.findOne({ where: { bookId: bookId } });
+      console.log("After commit:", updatedLike.userIds); // Debugging line
+    }
 
     res
       .status(200)

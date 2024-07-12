@@ -1,8 +1,8 @@
 const { Op } = require("sequelize");
-const { User, Book, Comment } = require("../models");
+const { User, Book, Comment, Bannedword } = require("../models");
 
 const containsBannedWord = async (content) => {
-  const bannedWords = await BannedWord.findAll();
+  const bannedWords = await Bannedword.findAll();
   return bannedWords.some((word) => content.includes(word.word));
 };
 
