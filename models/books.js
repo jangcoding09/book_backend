@@ -57,10 +57,10 @@ Book.init(
       allowNull: true,
     },
     likeCount: {
-      type: Sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       defaultValue: 0,
       allowNull: false,
-    }
+    },
   },
   {
     sequelize,

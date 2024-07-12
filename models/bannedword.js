@@ -32,3 +32,5 @@ Bannedword.init(
     timestamps: true,
   }
 );
+
+module.exports = Bannedword;
