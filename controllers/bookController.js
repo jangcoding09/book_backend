@@ -38,7 +38,7 @@ const getbooks = async (req, res) => {
     const {
       take = 10,
       page = 1,
-      order__createdAt = "DESC",
+      order__createdAt,
       where__title__i_like,
       order__clicks,
       order__likeCount,
