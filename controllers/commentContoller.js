@@ -131,15 +131,23 @@ const deletecomment = async (req, res) => {
 };
 const deleteCommentByRole = async (req, res) => {
   try {
-    const { commentId } = req.params;
+    const { commentId, userId } = req.params;
+
+    // Find the user by userId
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
     // Check if the user has the required role
-    if (!req.user.roles.includes("admin")) {
+    if (!user.role.includes("ADMIN")) {
       return res
         .status(403)
         .json({ error: "You do not have permission to delete this comment" });
     }
 
+    // Find the comment by commentId
     const comment = await Comment.findOne({
       where: {
         id: commentId,

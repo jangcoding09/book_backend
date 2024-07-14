@@ -5,8 +5,9 @@ const addBannedWord = async (req, res) => {
   try {
     const { word } = req.body;
     await Bannedword.create({ word });
-    const Bannedwords = await Bannedword.findAll();
-    res.status(201).json(Bannedwords);
+    const bannedwords = await Bannedword.findAll();
+    const total = await Bannedword.count();
+    res.status(201).json({ data: bannedwords, total });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -18,17 +19,31 @@ const deleteBannedWord = async (req, res) => {
     const { id } = req.params;
     await Bannedword.destroy({ where: { id } });
     const bannedwords = await Bannedword.findAll();
-    res.status(200).json(bannedwords);
+    const total = await Bannedword.count();
+    res.status(200).json({ data: bannedwords, total });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Endpoint to get all banned words
+// Endpoint to get all banned words with pagination
 const getBannedWords = async (req, res) => {
   try {
-    const bannedwords = await Bannedword.findAll();
-    res.status(200).json(bannedwords);
+    const { take = 10, page = 1 } = req.query;
+    const offset = (page - 1) * take;
+    const bannedwords = await Bannedword.findAll({
+      limit: parseInt(take),
+      offset: parseInt(offset),
+    });
+    const total = await Bannedword.count();
+    res
+      .status(200)
+      .json({
+        data: bannedwords,
+        total,
+        page: parseInt(page),
+        take: parseInt(take),
+      });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

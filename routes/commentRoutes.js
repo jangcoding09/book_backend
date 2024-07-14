@@ -15,5 +15,5 @@ router.get("/", getcomments);
 router.post("/:bookId", authenticate, postcomment);
 router.patch("/:bookId/:commentId", authenticate, patchcomment);
 router.delete("/:bookId/:commentId", authenticate, deletecomment);
-router.delete("/role/:bookId/:commentId", authenticate, deleteCommentByRole);
+router.delete("/role/:commentId/:userId", authenticate, deleteCommentByRole);
 module.exports = router;
