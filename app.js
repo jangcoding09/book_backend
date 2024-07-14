@@ -6,14 +6,21 @@ const cors = require("cors");
 require("dotenv").config();
 const { connectDB } = require("./config/db"); // DB 연결 함수
 const { exec } = require("child_process");
+const path = require("path");
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:3000", // 클라이언트의 주소
+    origin: process.env.FRONTEND_URL || "http://localhost:3000", // 클라이언트의 주소
     credentials: true, // 쿠키를 포함한 요청을 허용
   })
 );
@@ -106,21 +113,8 @@ app.post("/mail/verify-code", async (req, res) => {
 const startServer = async () => {
   await connectDB();
 
-  // 마이그레이션 실행
-  exec("npx sequelize-cli db:migrate", (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing migrations: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.error(`Migration stderr: ${stderr}`);
-      return;
-    }
-    console.log(`Migration stdout: ${stdout}`);
-
-    app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-    });
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
   });
 };
 
