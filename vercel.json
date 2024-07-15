@@ -126,17 +126,17 @@
     },
     {
       "src": "/api/statistics/count",
-      "dest": "/api/statistics/getCount.js",
+      "dest": "/api/getCount.js",
       "methods": ["GET"]
     },
     {
       "src": "/api/users",
-      "dest": "/api/users/users.js",
+      "dest": "/api/users.js",
       "methods": ["GET"]
     },
     {
       "src": "/api/users/update",
-      "dest": "/api/users/users.js",
+      "dest": "/api/users.js",
       "methods": ["PATCH"]
     }
   ]
