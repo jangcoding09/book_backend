@@ -13,8 +13,8 @@ const bannedwordRouter = require("./bannedword");
 const likeRouter = require("./like");
 const mailRouter = require("./mail");
 const usersRouter = require("./users");
-const getCountRouter = require("./getCount");
-const getMyFavoritesRouter = require("./getMyFavorites");
+// const getCountRouter = require("./getCount");
+// const getMyFavoritesRouter = require("./getMyFavorites");
 const imageRouter = require("./image");
 
 const app = express();
@@ -39,8 +39,8 @@ app.use("/api/bannedword", bannedwordRouter);
 app.use("/api/like", likeRouter);
 app.use("/api/mail", mailRouter);
 app.use("/api/users", usersRouter);
-app.use("/api/statistics", getCountRouter);
-app.use("/api/myfavorites", getMyFavoritesRouter);
+// app.use("/api/statistics", getCountRouter);
+// app.use("/api/myfavorites", getMyFavoritesRouter);
 app.use("/api/image", imageRouter);
 
 module.exports = app;
