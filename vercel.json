@@ -2,111 +2,121 @@
   "version": 2,
   "builds": [{ "src": "api/**/*.js", "use": "@vercel/node" }],
   "routes": [
+    { "src": "/api/auth/signup", "dest": "/api/auth.js", "methods": ["POST"] },
+    { "src": "/api/auth/login", "dest": "/api/auth.js", "methods": ["POST"] },
+    {
+      "src": "/api/auth/verify-email",
+      "dest": "/api/auth.js",
+      "methods": ["GET"]
+    },
+    { "src": "/api/auth/logout", "dest": "/api/auth.js", "methods": ["POST"] },
+    { "src": "/api/auth/me", "dest": "/api/auth.js", "methods": ["GET"] },
+    { "src": "/api/auth/token", "dest": "/api/auth.js", "methods": ["POST"] },
     { "src": "/api/book/:id", "dest": "/api/book/getbook.js" },
     { "src": "/api/book", "dest": "/api/book/getbooks.js" },
     {
       "src": "/api/book",
-      "dest": "/api/book/postbook.js",
+      "dest": "/api/book/book.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/book/:id",
-      "dest": "/api/book/deletebook.js",
+      "dest": "/api/book/book.js",
       "methods": ["DELETE"]
     },
     {
       "src": "/api/book/:id",
-      "dest": "/api/book/patchbook.js",
+      "dest": "/api/book/book.js",
       "methods": ["PATCH"]
     },
     {
       "src": "/api/book/increment-clicks/:id",
-      "dest": "/api/book/incrementClicks.js",
+      "dest": "/api/book/book.js",
       "methods": ["PATCH"]
     },
     {
       "src": "/api/bannedword",
-      "dest": "/api/bannedword/getBannedWords.js",
+      "dest": "/api/bannedword/bannedword.js",
       "methods": ["GET"]
     },
     {
       "src": "/api/bannedword",
-      "dest": "/api/bannedword/addBannedWord.js",
+      "dest": "/api/bannedword/bannedword.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/bannedword/:id",
-      "dest": "/api/bannedword/deleteBannedWord.js",
+      "dest": "/api/bannedword/bannedword.js",
       "methods": ["DELETE"]
     },
     {
       "src": "/api/comment/:bookId",
-      "dest": "/api/comment/getcommentsForBook.js",
+      "dest": "/api/comment/comment.js",
       "methods": ["GET"]
     },
     {
       "src": "/api/comment",
-      "dest": "/api/comment/getcomments.js",
+      "dest": "/api/comment/comment.js",
       "methods": ["GET"]
     },
     {
       "src": "/api/comment/:bookId",
-      "dest": "/api/comment/postcomment.js",
+      "dest": "/api/comment/comment.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/comment/:bookId/:commentId",
-      "dest": "/api/comment/patchcomment.js",
+      "dest": "/api/comment/comment.js",
       "methods": ["PATCH"]
     },
     {
       "src": "/api/comment/:bookId/:commentId",
-      "dest": "/api/comment/deletecomment.js",
+      "dest": "/api/comment/comment.js",
       "methods": ["DELETE"]
     },
     {
       "src": "/api/comment/role/:commentId/:userId",
-      "dest": "/api/comment/deleteCommentByRole.js",
+      "dest": "/api/comment/comment.js",
       "methods": ["DELETE"]
     },
     {
       "src": "/api/image/temp/profile",
-      "dest": "/api/image/uploadProfileImage.js",
+      "dest": "/api/image/image.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/image/temp",
-      "dest": "/api/image/uploadImages.js",
+      "dest": "/api/image/image.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/image/temp/:bookId/:imageId",
-      "dest": "/api/image/deleteImage.js",
+      "dest": "/api/image/image.js",
       "methods": ["DELETE"]
     },
     {
       "src": "/api/like/:bookId/:id",
-      "dest": "/api/like/getBookLike.js",
+      "dest": "/api/like/like.js",
       "methods": ["GET"]
     },
     {
       "src": "/api/like/add/:bookId/:id",
-      "dest": "/api/like/addLike.js",
+      "dest": "/api/like/like.js",
       "methods": ["PATCH"]
     },
     {
       "src": "/api/like/remove/:bookId/:id",
-      "dest": "/api/like/removeLike.js",
+      "dest": "/api/like/like.js",
       "methods": ["PATCH"]
     },
     {
       "src": "/api/mail/send-code",
-      "dest": "/api/mail/sendCode.js",
+      "dest": "/api/mail/mail.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/mail/verify-code",
-      "dest": "/api/mail/verifyCode.js",
+      "dest": "/api/mail/mail.js",
       "methods": ["POST"]
     },
     {
@@ -121,12 +131,12 @@
     },
     {
       "src": "/api/users",
-      "dest": "/api/users/getUsers.js",
+      "dest": "/api/users/users.js",
       "methods": ["GET"]
     },
     {
       "src": "/api/users/update",
-      "dest": "/api/users/patchUser.js",
+      "dest": "/api/users/users.js",
       "methods": ["PATCH"]
     }
   ]

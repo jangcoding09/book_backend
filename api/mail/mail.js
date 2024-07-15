@@ -1,7 +1,11 @@
-const nodemailer = require("nodemailer");
 require("dotenv").config();
+const express = require("express");
+const nodemailer = require("nodemailer");
 
-module.exports = async (req, res) => {
+const app = express();
+app.use(express.json());
+
+app.post("/api/mail/send-code", async (req, res) => {
   const { email } = req.body;
 
   const verificationCode = Math.floor(
@@ -37,4 +41,29 @@ module.exports = async (req, res) => {
     console.error("Error sending email:", error);
     res.status(500).json({ message: "Failed to send verification code." });
   }
-};
+});
+
+app.post("/api/mail/verify-code", async (req, res) => {
+  const { email, code } = req.body;
+
+  try {
+    if (global.verificationCodes && global.verificationCodes[email]) {
+      const storedCode = global.verificationCodes[email].code;
+
+      if (code === storedCode) {
+        res
+          .status(200)
+          .json({ message: "Verification code matched. Proceed with signup." });
+      } else {
+        res.status(400).json({ message: "Verification code does not match." });
+      }
+    } else {
+      res.status(400).json({ message: "Verification code not found." });
+    }
+  } catch (error) {
+    console.error("Error verifying code:", error);
+    res.status(500).json({ message: "Failed to verify code." });
+  }
+});
+
+module.exports = app;

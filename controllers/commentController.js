@@ -1,4 +1,3 @@
-const { Op } = require("sequelize");
 const { User, Book, Comment, Bannedword } = require("../models");
 
 const containsBannedWord = async (content) => {
