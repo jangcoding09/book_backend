@@ -1,5 +1,133 @@
 {
   "version": 2,
-  "builds": [{ "src": "api/app.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "/api/app.js" }]
+  "builds": [{ "src": "api/**/*.js", "use": "@vercel/node" }],
+  "routes": [
+    { "src": "/api/book/:id", "dest": "/api/book/getbook.js" },
+    { "src": "/api/book", "dest": "/api/book/getbooks.js" },
+    {
+      "src": "/api/book",
+      "dest": "/api/book/postbook.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/api/book/:id",
+      "dest": "/api/book/deletebook.js",
+      "methods": ["DELETE"]
+    },
+    {
+      "src": "/api/book/:id",
+      "dest": "/api/book/patchbook.js",
+      "methods": ["PATCH"]
+    },
+    {
+      "src": "/api/book/increment-clicks/:id",
+      "dest": "/api/book/incrementClicks.js",
+      "methods": ["PATCH"]
+    },
+    {
+      "src": "/api/bannedword",
+      "dest": "/api/bannedword/getBannedWords.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/api/bannedword",
+      "dest": "/api/bannedword/addBannedWord.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/api/bannedword/:id",
+      "dest": "/api/bannedword/deleteBannedWord.js",
+      "methods": ["DELETE"]
+    },
+    {
+      "src": "/api/comment/:bookId",
+      "dest": "/api/comment/getcommentsForBook.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/api/comment",
+      "dest": "/api/comment/getcomments.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/api/comment/:bookId",
+      "dest": "/api/comment/postcomment.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/api/comment/:bookId/:commentId",
+      "dest": "/api/comment/patchcomment.js",
+      "methods": ["PATCH"]
+    },
+    {
+      "src": "/api/comment/:bookId/:commentId",
+      "dest": "/api/comment/deletecomment.js",
+      "methods": ["DELETE"]
+    },
+    {
+      "src": "/api/comment/role/:commentId/:userId",
+      "dest": "/api/comment/deleteCommentByRole.js",
+      "methods": ["DELETE"]
+    },
+    {
+      "src": "/api/image/temp/profile",
+      "dest": "/api/image/uploadProfileImage.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/api/image/temp",
+      "dest": "/api/image/uploadImages.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/api/image/temp/:bookId/:imageId",
+      "dest": "/api/image/deleteImage.js",
+      "methods": ["DELETE"]
+    },
+    {
+      "src": "/api/like/:bookId/:id",
+      "dest": "/api/like/getBookLike.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/api/like/add/:bookId/:id",
+      "dest": "/api/like/addLike.js",
+      "methods": ["PATCH"]
+    },
+    {
+      "src": "/api/like/remove/:bookId/:id",
+      "dest": "/api/like/removeLike.js",
+      "methods": ["PATCH"]
+    },
+    {
+      "src": "/api/mail/send-code",
+      "dest": "/api/mail/sendCode.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/api/mail/verify-code",
+      "dest": "/api/mail/verifyCode.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/api/myfavorites/:id",
+      "dest": "/api/myfavorites/getMyFavorites.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/api/statistics/count",
+      "dest": "/api/statistics/getCount.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/api/users",
+      "dest": "/api/users/getUsers.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/api/users/update",
+      "dest": "/api/users/patchUser.js",
+      "methods": ["PATCH"]
+    }
+  ]
 }
