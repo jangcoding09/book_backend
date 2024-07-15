@@ -12,116 +12,116 @@
     { "src": "/api/auth/logout", "dest": "/api/auth.js", "methods": ["POST"] },
     { "src": "/api/auth/me", "dest": "/api/auth.js", "methods": ["GET"] },
     { "src": "/api/auth/token", "dest": "/api/auth.js", "methods": ["POST"] },
-    { "src": "/api/book/:id", "dest": "/api/book/getbook.js" },
-    { "src": "/api/book", "dest": "/api/book/getbooks.js" },
+    { "src": "/api/book/:id", "dest": "/api/book.js" },
+    { "src": "/api/book", "dest": "/api/book.js" },
     {
       "src": "/api/book",
-      "dest": "/api/book/book.js",
+      "dest": "/api/book.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/book/:id",
-      "dest": "/api/book/book.js",
+      "dest": "/api/book.js",
       "methods": ["DELETE"]
     },
     {
       "src": "/api/book/:id",
-      "dest": "/api/book/book.js",
+      "dest": "/api/book.js",
       "methods": ["PATCH"]
     },
     {
       "src": "/api/book/increment-clicks/:id",
-      "dest": "/api/book/book.js",
+      "dest": "/api/book.js",
       "methods": ["PATCH"]
     },
     {
       "src": "/api/bannedword",
-      "dest": "/api/bannedword/bannedword.js",
+      "dest": "/api/bannedword.js",
       "methods": ["GET"]
     },
     {
       "src": "/api/bannedword",
-      "dest": "/api/bannedword/bannedword.js",
+      "dest": "/api/bannedword.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/bannedword/:id",
-      "dest": "/api/bannedword/bannedword.js",
+      "dest": "/api/bannedword.js",
       "methods": ["DELETE"]
     },
     {
       "src": "/api/comment/:bookId",
-      "dest": "/api/comment/comment.js",
+      "dest": "/api/comment.js",
       "methods": ["GET"]
     },
     {
       "src": "/api/comment",
-      "dest": "/api/comment/comment.js",
+      "dest": "/api/comment.js",
       "methods": ["GET"]
     },
     {
       "src": "/api/comment/:bookId",
-      "dest": "/api/comment/comment.js",
+      "dest": "/api/comment.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/comment/:bookId/:commentId",
-      "dest": "/api/comment/comment.js",
+      "dest": "/api/comment.js",
       "methods": ["PATCH"]
     },
     {
       "src": "/api/comment/:bookId/:commentId",
-      "dest": "/api/comment/comment.js",
+      "dest": "/api/comment.js",
       "methods": ["DELETE"]
     },
     {
       "src": "/api/comment/role/:commentId/:userId",
-      "dest": "/api/comment/comment.js",
+      "dest": "/api/comment.js",
       "methods": ["DELETE"]
     },
     {
       "src": "/api/image/temp/profile",
-      "dest": "/api/image/image.js",
+      "dest": "/api/image.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/image/temp",
-      "dest": "/api/image/image.js",
+      "dest": "/api/image.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/image/temp/:bookId/:imageId",
-      "dest": "/api/image/image.js",
+      "dest": "/api/image.js",
       "methods": ["DELETE"]
     },
     {
       "src": "/api/like/:bookId/:id",
-      "dest": "/api/like/like.js",
+      "dest": "/api/like.js",
       "methods": ["GET"]
     },
     {
       "src": "/api/like/add/:bookId/:id",
-      "dest": "/api/like/like.js",
+      "dest": "/api/like.js",
       "methods": ["PATCH"]
     },
     {
       "src": "/api/like/remove/:bookId/:id",
-      "dest": "/api/like/like.js",
+      "dest": "/api/like.js",
       "methods": ["PATCH"]
     },
     {
       "src": "/api/mail/send-code",
-      "dest": "/api/mail/mail.js",
+      "dest": "/api/mail.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/mail/verify-code",
-      "dest": "/api/mail/mail.js",
+      "dest": "/api/mail.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/myfavorites/:id",
-      "dest": "/api/myfavorites/getMyFavorites.js",
+      "dest": "/api/getMyFavorites.js",
       "methods": ["GET"]
     },
     {

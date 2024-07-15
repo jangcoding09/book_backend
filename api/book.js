@@ -7,9 +7,9 @@ const {
   incrementClicks,
   patchbook,
   postbook,
-} = require("../../controllers/bookController");
-const connectDB = require("../../config/db");
-const authenticate = require("../../middleware/authMiddleware");
+} = require("../controllers/bookController");
+const { connectDB } = require("../config/db");
+const authenticate = require("../middleware/authMiddleware");
 
 const app = express();
 app.use(express.json());

@@ -7,9 +7,9 @@ const {
   deletecomment,
   getcomments,
   deleteCommentByRole,
-} = require("../../controllers/commentController");
-const connectDB = require("../../config/db");
-const authenticate = require("../../middleware/authMiddleware");
+} = require("../controllers/commentController");
+const { connectDB } = require("../config/db");
+const authenticate = require("../middleware/authMiddleware");
 
 const app = express();
 app.use(express.json());

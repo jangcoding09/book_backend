@@ -1,8 +1,8 @@
 require("dotenv").config();
 const express = require("express");
-const { patchUser, getUsers } = require("../../controllers/usersController");
-const connectDB = require("../../config/db");
-const authenticate = require("../../middleware/authMiddleware");
+const { patchUser, getUsers } = require("../controllers/usersController");
+const { connectDB } = require("../config/db");
+const authenticate = require("../middleware/authMiddleware");
 
 const app = express();
 app.use(express.json());

@@ -4,9 +4,9 @@ const {
   addLike,
   getBookLike,
   removeLike,
-} = require("../../controllers/likeController");
-const connectDB = require("../../config/db");
-const authenticate = require("../../middleware/authMiddleware");
+} = require("../controllers/likeController");
+const { connectDB } = require("../config/db");
+const authenticate = require("../middleware/authMiddleware");
 
 const app = express();
 app.use(express.json());

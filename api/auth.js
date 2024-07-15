@@ -7,9 +7,9 @@ const {
   logout,
   getUser,
   getAccessToken,
-} = require("../../controllers/authController");
-const connectDB = require("../../config/db");
-const authenticate = require("../../middleware/authMiddleware");
+} = require("../controllers/authController");
+const { connectDB } = require("../config/db");
+const authenticate = require("../middleware/authMiddleware");
 
 const app = express();
 app.use(express.json());

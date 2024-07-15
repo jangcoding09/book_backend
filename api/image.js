@@ -1,10 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
-const { Image, Book } = require("../../models");
-const { removeImage } = require("../../utils/removeImage");
-const { uploadImage } = require("../../utils/uploadImage");
-const connectDB = require("../../config/db");
+const { Image, Book } = require("../models");
+const { removeImage } = require("../utils/removeImage");
+const { uploadImage } = require("../utils/uploadImage");
+const { connectDB } = require("../config/db");
 
 const app = express();
 app.use(express.json());

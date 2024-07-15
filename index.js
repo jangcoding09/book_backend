@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
-
+const cookieParser = require("cookie-parser");
 const app = express();
 
 // CORS 설정
@@ -11,7 +11,9 @@ app.use(
     credentials: true, // 쿠키를 포함한 요청을 허용
   })
 );
-
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 // 정적 파일 제공
 app.use(express.static(path.join(__dirname, "..", "build")));
 

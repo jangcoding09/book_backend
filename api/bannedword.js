@@ -4,9 +4,9 @@ const {
   addBannedWord,
   deleteBannedWord,
   getBannedWords,
-} = require("../../controllers/bannedwordController");
-const connectDB = require("../../config/db");
-const authenticate = require("../../middleware/authMiddleware");
+} = require("../controllers/bannedwordController");
+const { connectDB } = require("../config/db");
+const authenticate = require("../middleware/authMiddleware");
 
 const app = express();
 app.use(express.json());
