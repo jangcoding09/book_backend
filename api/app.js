@@ -4,8 +4,7 @@ const nodemailer = require("nodemailer");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config();
-const { connectDB } = require("./config/db"); // DB 연결 함수
-const { exec } = require("child_process");
+const { connectDB } = require("../config/db"); // DB 연결 함수
 const path = require("path");
 
 const app = express();
@@ -13,30 +12,28 @@ const port = process.env.PORT || 5000;
 
 app.use(express.static(path.join(__dirname, "build")));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
-// Middleware
 app.use(
   cors({
-    origin: "https://https://bukkeu.netlify.app" || "http://localhost:3000", // 클라이언트의 주소
-    credentials: true, // 쿠키를 포함한 요청을 허용
+    origin: ["https://bukkeu.netlify.app", "http://localhost:3000"],
+    credentials: true,
   })
 );
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const authRoutes = require("./routes/authRoutes");
-const bookRoutes = require("./routes/bookRoutes");
-const imageRoutes = require("./routes/imageRoutes");
-const commentRoutes = require("./routes/commentRoutes");
-const likeRoutes = require("./routes/likeRoutes");
-const usersRoutes = require("./routes/usersRoutes");
-const bannedwordRoutes = require("./routes/bannedwordRoutes");
-const myfavoriteRoutes = require("./routes/myfavoriteRoutes");
-const statisticsRoutes = require("./routes/statisticRoutes");
+// Static files
+app.use(express.static(path.join(__dirname, "..", "build")));
+
+const authRoutes = require("../routes/authRoutes");
+const bookRoutes = require("../routes/bookRoutes");
+const imageRoutes = require("../routes/imageRoutes");
+const commentRoutes = require("../routes/commentRoutes");
+const likeRoutes = require("../routes/likeRoutes");
+const usersRoutes = require("../routes/usersRoutes");
+const bannedwordRoutes = require("../routes/bannedwordRoutes");
+const myfavoriteRoutes = require("../routes/myfavoriteRoutes");
+const statisticsRoutes = require("../routes/statisticRoutes");
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/book", bookRoutes);
@@ -46,6 +43,11 @@ app.use("/like", likeRoutes);
 app.use("/bannedword", bannedwordRoutes);
 app.use("/myfavorites", myfavoriteRoutes);
 app.use("/statistics", statisticsRoutes);
+
+// Serve React App
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+});
 
 // Generate a verification code and send an email
 app.post("/mail/send-code", async (req, res) => {
