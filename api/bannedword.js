@@ -1,28 +1,23 @@
-require("dotenv").config();
 const express = require("express");
 const {
   addBannedWord,
   deleteBannedWord,
   getBannedWords,
 } = require("../controllers/bannedwordController");
-const { connectDB } = require("../config/db");
 const authenticate = require("../middleware/authMiddleware");
 
-const app = express();
-app.use(express.json());
+const router = express.Router();
 
-connectDB();
-
-app.get("/api/bannedword", async (req, res) => {
+router.get("/", async (req, res) => {
   await getBannedWords(req, res);
 });
 
-app.post("/api/bannedword", authenticate, async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
   await addBannedWord(req, res);
 });
 
-app.delete("/api/bannedword/:id", authenticate, async (req, res) => {
+router.delete("/:id", authenticate, async (req, res) => {
   await deleteBannedWord(req, res);
 });
 
-module.exports = app;
+module.exports = router;

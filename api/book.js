@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require("express");
 const {
   deletebook,
@@ -8,36 +7,32 @@ const {
   patchbook,
   postbook,
 } = require("../controllers/bookController");
-const { connectDB } = require("../config/db");
 const authenticate = require("../middleware/authMiddleware");
 
-const app = express();
-app.use(express.json());
+const router = express.Router();
 
-connectDB();
-
-app.get("/api/book/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   await getbook(req, res);
 });
 
-app.get("/api/book", async (req, res) => {
+router.get("/", async (req, res) => {
   await getbooks(req, res);
 });
 
-app.post("/api/book", authenticate, async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
   await postbook(req, res);
 });
 
-app.delete("/api/book/:id", authenticate, async (req, res) => {
+router.delete("/:id", authenticate, async (req, res) => {
   await deletebook(req, res);
 });
 
-app.patch("/api/book/:id", authenticate, async (req, res) => {
+router.patch("/:id", authenticate, async (req, res) => {
   await patchbook(req, res);
 });
 
-app.patch("/api/book/increment-clicks/:id", authenticate, async (req, res) => {
+router.patch("/increment-clicks/:id", authenticate, async (req, res) => {
   await incrementClicks(req, res);
 });
 
-module.exports = app;
+module.exports = router;

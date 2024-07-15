@@ -2,10 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const nodemailer = require("nodemailer");
 
-const app = express();
-app.use(express.json());
+const router = express.Router();
 
-app.post("/api/mail/send-code", async (req, res) => {
+router.post("/send-code", async (req, res) => {
   const { email } = req.body;
 
   const verificationCode = Math.floor(
@@ -43,7 +42,7 @@ app.post("/api/mail/send-code", async (req, res) => {
   }
 });
 
-app.post("/api/mail/verify-code", async (req, res) => {
+router.post("/verify-code", async (req, res) => {
   const { email, code } = req.body;
 
   try {
@@ -66,4 +65,4 @@ app.post("/api/mail/verify-code", async (req, res) => {
   }
 });
 
-module.exports = app;
+module.exports = router;

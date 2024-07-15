@@ -4,16 +4,14 @@ const multer = require("multer");
 const { Image, Book } = require("../models");
 const { removeImage } = require("../utils/removeImage");
 const { uploadImage } = require("../utils/uploadImage");
-const { connectDB } = require("../config/db");
 
 const app = express();
 app.use(express.json());
-
-connectDB();
+const router = express.Router();
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-app.delete("/api/image/temp/:bookId/:imageId", async (req, res) => {
+router.delete("/temp/:bookId/:imageId", async (req, res) => {
   try {
     const { bookId, imageId } = req.params;
 
@@ -49,7 +47,7 @@ app.delete("/api/image/temp/:bookId/:imageId", async (req, res) => {
   }
 });
 
-app.post("/api/image/temp", upload.array("images", 10), async (req, res) => {
+router.post("/temp", upload.array("images", 10), async (req, res) => {
   try {
     const files = req.files;
     if (!files || files.length === 0) {
@@ -79,8 +77,8 @@ app.post("/api/image/temp", upload.array("images", 10), async (req, res) => {
   }
 });
 
-app.post(
-  "/api/image/temp/profile",
+router.post(
+  "/temp/profile",
   upload.single("profileImage"),
   async (req, res) => {
     try {
@@ -107,4 +105,4 @@ app.post(
   }
 );
 
-module.exports = app;
+module.exports = router;

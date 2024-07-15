@@ -1,51 +1,28 @@
-require("dotenv").config();
 const express = require("express");
 const {
-  getcommentsForBook,
-  postcomment,
-  patchcomment,
-  deletecomment,
-  getcomments,
-  deleteCommentByRole,
+  addComment,
+  getComments,
+  updateComment,
+  deleteComment,
 } = require("../controllers/commentController");
-const { connectDB } = require("../config/db");
 const authenticate = require("../middleware/authMiddleware");
 
-const app = express();
-app.use(express.json());
+const router = express.Router();
 
-connectDB();
-
-app.get("/api/comment/:bookId", async (req, res) => {
-  await getcommentsForBook(req, res);
+router.get("/:bookId", async (req, res) => {
+  await getComments(req, res);
 });
 
-app.get("/api/comment", async (req, res) => {
-  await getcomments(req, res);
+router.post("/:bookId", authenticate, async (req, res) => {
+  await addComment(req, res);
 });
 
-app.post("/api/comment/:bookId", authenticate, async (req, res) => {
-  await postcomment(req, res);
+router.patch("/:bookId/:commentId", authenticate, async (req, res) => {
+  await updateComment(req, res);
 });
 
-app.patch("/api/comment/:bookId/:commentId", authenticate, async (req, res) => {
-  await patchcomment(req, res);
+router.delete("/:bookId/:commentId", authenticate, async (req, res) => {
+  await deleteComment(req, res);
 });
 
-app.delete(
-  "/api/comment/:bookId/:commentId",
-  authenticate,
-  async (req, res) => {
-    await deletecomment(req, res);
-  }
-);
-
-app.delete(
-  "/api/comment/role/:commentId/:userId",
-  authenticate,
-  async (req, res) => {
-    await deleteCommentByRole(req, res);
-  }
-);
-
-module.exports = app;
+module.exports = router;
