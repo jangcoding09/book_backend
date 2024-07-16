@@ -6,7 +6,7 @@ const cors = require("cors");
 require("dotenv").config();
 const { connectDB } = require("./config/db"); // DB 연결 함수
 // const { exec } = require("child_process");
-// const path = require("path");
+const path = require("path");
 
 const app = express();
 const port = process.env.PORT || 5000;
