@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { URL } = require("url");
-
+const pg = require("pg");
 const databaseUrl = new URL(process.env.POSTGRES_URL);
 
 module.exports = {
@@ -28,7 +28,7 @@ module.exports = {
     port: process.env.POSTGRES_PORT || 5432,
     schema: "public", // 스키마 지정
     dialect: "postgres",
-    dialectModule: pg,
+    dialectModule: require("pg"),
     dialectOptions: {
       ssl: {
         require: true,
