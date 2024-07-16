@@ -12,6 +12,7 @@ module.exports = {
     port: databaseUrl.port,
     schema: "public", // 스키마 지정
     dialect: "postgres",
+    dialectModule: pg,
     dialectOptions: {
       ssl: {
         require: true,
@@ -27,6 +28,7 @@ module.exports = {
     port: databaseUrl.port,
     schema: "public", // 스키마 지정
     dialect: "postgres",
+    dialectModule: pg,
     dialectOptions: {
       ssl: {
         require: true,
