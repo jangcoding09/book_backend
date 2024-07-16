@@ -19,11 +19,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use(express.static(path.join(__dirname, "build")));
+// 정적 파일 제공
+app.use(express.static(path.join(__dirname, "build")));
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "build", "index.html"));
-// });
+// 모든 요청에 대해 index.html 제공
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 // Middleware
 app.use(
