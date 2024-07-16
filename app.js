@@ -10,6 +10,16 @@ const { connectDB } = require("./config/db"); // DB 연결 함수
 
 const app = express();
 const port = process.env.PORT || 5000;
+// CSP 설정
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'none'; img-src 'self' data:;"
+  );
+  next();
+});
+
+app.use(express.static("public"));
 
 // app.use(express.static(path.join(__dirname, "build")));
 
