@@ -6,7 +6,7 @@ const cors = require("cors");
 require("dotenv").config();
 const { connectDB } = require("./config/db"); // DB 연결 함수
 // const { exec } = require("child_process");
-const path = require("path");
+// const path = require("path");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -19,13 +19,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// 정적 파일 제공
-app.use(express.static(path.join(__dirname, "build")));
+// // 정적 파일 제공
+// app.use(express.static(path.join(__dirname, "build")));
 
-// 모든 요청에 대해 index.html 제공
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
+// // 모든 요청에 대해 index.html 제공
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "build", "index.html"));
+// });
 
 // Middleware
 app.use(
@@ -118,6 +118,11 @@ app.post("/mail/verify-code", async (req, res) => {
     console.error("Error verifying code:", error);
     res.status(500).json({ message: "Failed to verify code." });
   }
+});
+
+// 404 에러 핸들링
+app.use((req, res, next) => {
+  res.status(404).json({ message: "Not Found" });
 });
 
 const startServer = async () => {
