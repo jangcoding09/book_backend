@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// 이메일 보내기 함수 예시
+// 이메일 보내기 함수 예시.
 const sendEmail = async (toEmail, subject, text) => {
   try {
     const info = await transporter.sendMail({
