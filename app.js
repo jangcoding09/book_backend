@@ -57,7 +57,6 @@ app.use("/bannedword", bannedwordRoutes);
 app.use("/myfavorites", myfavoriteRoutes);
 app.use("/statistics", statisticsRoutes);
 
-// Generate a verification code and send an email
 app.post("/mail/send-code", async (req, res) => {
   const { email } = req.body;
 
@@ -78,7 +77,7 @@ app.post("/mail/send-code", async (req, res) => {
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Email Verification Code",
-      text: `Your verification code is: ${verificationCode}`,
+      text: `인증번호는 다음과 같습니다.: ${verificationCode}`,
     };
 
     await transporter.sendMail(mailOptions);
@@ -89,10 +88,18 @@ app.post("/mail/send-code", async (req, res) => {
       expiresAt: Date.now() + 10 * 60 * 1000,
     };
 
-    res.status(200).json({ message: "Verification code sent." });
+    res
+      .status(200)
+      .json({ message: "인증번호가 전송되었습니다. 메일을 확인해주세요!" });
   } catch (error) {
     console.error("Error sending email:", error);
-    res.status(500).json({ message: "Failed to send verification code." });
+    if (error.responseCode === 550) {
+      res.status(404).json({ message: "이메일 주소가 확인되지 않습니다." });
+    } else {
+      res
+        .status(500)
+        .json({ message: "인증코드 전송에 실패했습니다.(서버 에러)" });
+    }
   }
 });
 
@@ -107,12 +114,14 @@ app.post("/mail/verify-code", async (req, res) => {
       if (code === storedCode) {
         res
           .status(200)
-          .json({ message: "Verification code matched. Proceed with signup." });
+          .json({
+            message: "인증번호가 일치합니다. 회원가입을 계속 진행하세요.",
+          });
       } else {
-        res.status(400).json({ message: "Verification code does not match." });
+        res.status(400).json({ message: "인증번호가 일치하지 않습니다." });
       }
     } else {
-      res.status(400).json({ message: "Verification code not found." });
+      res.status(400).json({ message: "인증번호를 찾을 수 없습니다." });
     }
   } catch (error) {
     console.error("Error verifying code:", error);

@@ -85,26 +85,6 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.verifyEmail = async (req, res) => {
-  const { token } = req.query;
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findByPk(decoded.id);
-
-    if (!user) {
-      return res.status(400).json({ message: "Invalid token" });
-    }
-
-    user.valid_email = true;
-    await user.save();
-
-    res.json({ message: "Email verified successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
 exports.logout = async (req, res) => {
   try {
     res.status(200).json({ message: "Logout successful" });
