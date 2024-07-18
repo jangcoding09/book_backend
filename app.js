@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 // Middleware
 app.use(
   cors({
-    origin: "https://bookbook.netlify.app" || "http://localhost:3000", // 클라이언트의 주소
+    origin: "https://bookkbookk.netlify.app" || "http://localhost:3000", // 클라이언트의 주소
     credentials: true, // 쿠키를 포함한 요청을 허용
   })
 );
