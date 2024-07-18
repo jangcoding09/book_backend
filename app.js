@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 // Middleware
 app.use(
   cors({
-    origin: "https://bukkeu.netlify.app" || "http://localhost:3000", // 클라이언트의 주소
+    origin: "https://bookbook.netlify.app" || "http://localhost:3000", // 클라이언트의 주소
     credentials: true, // 쿠키를 포함한 요청을 허용
   })
 );
@@ -112,11 +112,9 @@ app.post("/mail/verify-code", async (req, res) => {
       const storedCode = global.verificationCodes[email].code;
 
       if (code === storedCode) {
-        res
-          .status(200)
-          .json({
-            message: "인증번호가 일치합니다. 회원가입을 계속 진행하세요.",
-          });
+        res.status(200).json({
+          message: "인증번호가 일치합니다. 회원가입을 계속 진행하세요.",
+        });
       } else {
         res.status(400).json({ message: "인증번호가 일치하지 않습니다." });
       }
