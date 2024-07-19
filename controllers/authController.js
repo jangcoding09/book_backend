@@ -21,16 +21,6 @@ exports.signup = async (req, res) => {
       password: hashedPassword,
     });
 
-    const emailToken = generateToken(user, "10m"); // 10분 유효시간
-
-    const emailVerificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${emailToken}`;
-
-    await sendEmail(
-      email,
-      "Email Verification",
-      `Please verify your email by clicking on the following link: ${emailVerificationUrl}`
-    );
-
     res.status(201).json({
       accessToken: generateToken(user),
       refreshToken: generateToken(user, "7d"),
