@@ -1,5 +1,22 @@
 const { User } = require("../models");
 const bcrypt = require("bcryptjs");
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    await user.destroy();
+
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 const getUsers = async (req, res) => {
   try {
     // Fetch all users from the database
@@ -46,4 +63,4 @@ const patchUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-module.exports = { getUsers, patchUser };
+module.exports = { getUsers, patchUser, deleteUser };
