@@ -41,7 +41,6 @@ const getbooks = async (req, res) => {
       order__createdAt,
       where__title__i_like,
       order__clicks,
-      order__likeCount,
     } = req.query;
 
     const where = {};
@@ -55,9 +54,6 @@ const getbooks = async (req, res) => {
     }
     if (order__clicks) {
       order.push(["clicks", order__clicks]);
-    }
-    if (order__likeCount) {
-      order.push(["likeCount", order__likeCount]);
     }
 
     const booksResult = await Book.findAndCountAll({

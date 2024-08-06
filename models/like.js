@@ -22,8 +22,8 @@ Like.init(
       onDelete: "CASCADE",
     },
     userIds: {
-      type: DataTypes.ARRAY(DataTypes.UUID),
-      allowNull: true,
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false,
       defaultValue: [],
     },
     createdAt: {
