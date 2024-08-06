@@ -6,8 +6,6 @@ const getBookLike = async (req, res) => {
 
     const like = await Like.findOne({
       where: { bookId },
-      transaction,
-      lock: transaction.LOCK.UPDATE,
     });
 
     if (!like) {
