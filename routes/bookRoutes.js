@@ -16,6 +16,6 @@ router.get("/", getbooks);
 router.post("/", authenticate, postbook);
 router.delete("/:id", authenticate, deletebook);
 router.patch("/:id", authenticate, patchbook);
-router.patch("/increment-clicks/:id", authenticate, incrementClicks);
+router.patch("/increment-clicks/:id", incrementClicks);
 
 module.exports = router;
