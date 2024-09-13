@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 const { uploadImage } = require("../utils/uploadImage");
-const { Image, Book } = require("../models");
+const { Image, Book, Story } = require("../models");
 const { bucket } = require("../firbase");
 router.post(
   "/temp/profile",
@@ -20,7 +20,9 @@ router.post(
         path: uploadResult.publicUrl,
         fbPath: uploadResult.filePath,
         order: 1,
-        type: 2,
+        type: file.type,
+        size: file.size,
+        name: file.originalname,
       };
       const uploadedImage = await Image.create(imageRecord);
       res
@@ -46,7 +48,9 @@ router.post("/temp", upload.array("images", 10), async (req, res) => {
       path: result.publicUrl,
       fbPath: result.filePath,
       order: index + 1,
-      type: 1, // 예시로 타입을 지정했습니다. 실제 사용 시 적절히 변경하세요.
+      type: 1,
+      size: files[index].size,
+      name: files[index].originalname,
     }));
 
     const uploadedImages = await Image.bulkCreate(imageRecords);
@@ -70,24 +74,35 @@ const removeImage = async (path) => {
   }
 };
 //이미지 삭제(imageId를 받아서 처리)
-router.delete("/temp/:bookId/:imageId", async (req, res) => {
+//이미지 삭제(type과 id를 받아서 처리)
+router.delete("/temp/:type/:id/:imageId", async (req, res) => {
   try {
-    const { bookId, imageId } = req.params;
+    const { type, id, imageId } = req.params;
 
-    // bookId로 해당 책 조회
-    const book = await Book.findByPk(bookId);
-
-    if (!book) {
-      return res.status(404).send({ error: "Book not found" });
+    let item;
+    if (type === "book") {
+      // bookId로 해당 책 조회
+      item = await Book.findByPk(id);
+    } else if (type === "story") {
+      // storyId로 해당 스토리 조회
+      item = await Story.findByPk(id);
+    } else {
+      return res.status(400).send({ error: "Invalid type parameter" });
     }
 
-    // 책의 imageIds 필드에서 imageId 제거
-    const imageIds = book.imageIds || [];
+    if (!item) {
+      return res.status(404).send({
+        error: `${type.charAt(0).toUpperCase() + type.slice(1)} not found`,
+      });
+    }
+
+    // item의 imageIds 필드에서 imageId 제거
+    const imageIds = item.imageIds || [];
     const updatedImageIds = imageIds.filter((id) => id !== imageId);
 
     // 수정된 imageIds를 데이터베이스에 업데이트
-    book.imageIds = updatedImageIds;
-    await book.save();
+    item.imageIds = updatedImageIds;
+    await item.save();
 
     // 이미지 삭제 로직
     const image = await Image.findByPk(imageId);
