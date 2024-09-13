@@ -23,7 +23,16 @@ Image.init(
       type: DataTypes.INTEGER,
     },
     type: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    size: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     path: {
       type: DataTypes.STRING,

@@ -51,6 +51,15 @@ db.Comment.belongsTo(db.Book, { foreignKey: "bookId", as: "book" });
 db.Book.hasMany(db.Like, { foreignKey: "bookId", as: "likes" });
 db.Like.belongsTo(db.Book, { foreignKey: "bookId", as: "book" });
 
+db.Story.hasMany(db.GptLike, { foreignKey: "storyId", as: "gptLikes" });
+db.GptLike.belongsTo(db.Story, { foreignKey: "storyId", as: "story" });
+
+db.Story.hasMany(db.GptComment, { foreignKey: "storyId", as: "gptComments" });
+db.GptComment.belongsTo(db.Story, { foreignKey: "storyId", as: "story" });
+
+db.User.hasMany(db.Story, { foreignKey: "userId", as: "stories" });
+db.Story.belongsTo(db.User, { foreignKey: "userId", as: "user" });
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
