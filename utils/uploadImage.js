@@ -15,7 +15,7 @@ const uploadImage = async (file) => {
 
     blobStream.on("finish", async () => {
       try {
-        await fileUpload.makePublic(); // Make the file publicly accessible
+        await fileUpload.makePublic();
         const publicUrl = `https://storage.googleapis.com/${bucket.name}/${fileUpload.name}`;
         resolve({ publicUrl, filePath: fileUpload.name });
       } catch (error) {
