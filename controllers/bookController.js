@@ -40,12 +40,17 @@ const getbooks = async (req, res) => {
       page = 1,
       order__createdAt,
       where__title__i_like,
+      where__author__i_like,
       order__clicks,
     } = req.query;
 
     const where = {};
     if (where__title__i_like) {
       where.title = { [Op.iLike]: `%${where__title__i_like}%` };
+    }
+
+    if (where__author__i_like) {
+      where.authorName = { [Op.iLike]: `%${where__author__i_like}%` };
     }
 
     const order = [];
