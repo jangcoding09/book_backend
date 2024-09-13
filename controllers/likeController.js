@@ -1,4 +1,4 @@
-const { Like, Book } = require("../models");
+const { Like } = require("../models");
 
 const getBookLike = async (req, res) => {
   try {
@@ -51,7 +51,7 @@ const addLike = async (req, res) => {
       if (!userIds.includes(id)) {
         like.userIds = [...userIds, id];
         console.log(like, "updated");
-        likecount = like.userIds.length;
+        likeCount = like.userIds.length;
         await like.save({ transaction });
       } else {
         console.log("User has already liked this book");
