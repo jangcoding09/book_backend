@@ -3,7 +3,7 @@ const { Book, Comment, User } = require("../models");
 const getCount = async (req, res) => {
   try {
     const totalBooks = await Book.count();
-    const totalClicks = await Book.sum("clicks"); // assuming `clicks` is a field in the `Book` model
+    const totalClicks = await Book.sum("clicks");
     const totalUsers = await User.count({ where: { role: "USER" } });
     const totalAdmins = await User.count({ where: { role: "ADMIN" } });
     const totalComments = await Comment.count();
