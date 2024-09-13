@@ -39,6 +39,27 @@ const getUsers = async (req, res) => {
     res.status(500).json({ status: 500, error: error.message });
   }
 };
+const getUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({
+      id: user.id,
+      nickname: user.nickname,
+      name: user.name,
+      email: user.email,
+      profileImg: user.profileImg,
+      createdAt: user.createdAt,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 //닉네임, 패스워드, 프로필이미지 등 변경
 const patchUser = async (req, res) => {
   try {
@@ -63,4 +84,4 @@ const patchUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-module.exports = { getUsers, patchUser, deleteUser };
+module.exports = { getUsers, getUser, patchUser, deleteUser };
