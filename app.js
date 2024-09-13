@@ -5,11 +5,11 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config();
 const { connectDB } = require("./config/db"); // DB 연결 함수
-// const { exec } = require("child_process");
-// const path = require("path");
+const OpenAI = require("openai");
 
 const app = express();
 const port = process.env.PORT || 5000;
+
 // CSP 설정
 app.use((req, res, next) => {
   res.setHeader(
@@ -19,19 +19,11 @@ app.use((req, res, next) => {
   next();
 });
 
-// // 정적 파일 제공
-// app.use(express.static(path.join(__dirname, "build")));
-
-// // 모든 요청에 대해 index.html 제공
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "build", "index.html"));
-// });
-
 // Middleware
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000", // 클라이언트의 주소
-    credentials: true, // 쿠키를 포함한 요청을 허용
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    credentials: true,
   })
 );
 app.use(cookieParser());
@@ -43,22 +35,34 @@ const bookRoutes = require("./routes/bookRoutes");
 const imageRoutes = require("./routes/imageRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const likeRoutes = require("./routes/likeRoutes");
+const gptlikeRoutes = require("./routes/gptlikeRoutes");
 const usersRoutes = require("./routes/usersRoutes");
 const bannedwordRoutes = require("./routes/bannedwordRoutes");
 const myfavoriteRoutes = require("./routes/myfavoriteRoutes");
 const statisticsRoutes = require("./routes/statisticRoutes");
+const gptRoutes = require("./routes/gptRoutes");
+const myStoryRoutes = require("./routes/gptMyStoryRoute");
+const storyListRoutes = require("./routes/storyListRoutes");
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/book", bookRoutes);
 app.use("/fb/image", imageRoutes);
 app.use("/comment", commentRoutes);
 app.use("/like", likeRoutes);
+app.use("/gptlike", gptlikeRoutes);
 app.use("/bannedword", bannedwordRoutes);
 app.use("/myfavorites", myfavoriteRoutes);
 app.use("/statistics", statisticsRoutes);
-
+app.use("/gpt", gptRoutes);
+app.use("/mystories", myStoryRoutes);
+app.use("/storylists", storyListRoutes);
 app.post("/mail/send-code", async (req, res) => {
   const { email } = req.body;
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: "유효하지 않은 이메일형식입니다." });
+  }
 
   const verificationCode = Math.floor(
     100000 + Math.random() * 900000
@@ -94,7 +98,9 @@ app.post("/mail/send-code", async (req, res) => {
   } catch (error) {
     console.error("Error sending email:", error);
     if (error.responseCode === 550) {
-      res.status(404).json({ message: "이메일 주소가 확인되지 않습니다." });
+      res.status(404).json({ message: "이메일 주소를 찾을 수 없습니다." });
+    } else if (error.code === "EENVELOPE") {
+      res.status(400).json({ message: "이메일 주소가 올바르지 않습니다." });
     } else {
       res
         .status(500)
