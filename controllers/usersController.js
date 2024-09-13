@@ -79,7 +79,7 @@ const patchUser = async (req, res) => {
 
     await user.save();
 
-    res.status(200).json({ message: "User updated successfully" });
+    res.status(200).json({ message: "유저정보가 업데이트 되었습니다." });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
