@@ -4,8 +4,8 @@ const { fetchImagesForBook } = require("./fetchImagesForBook");
 //getMyFavorites
 const getMyFavorites = async (req, res) => {
   try {
-    const { take = 4, page = 1, order__createdAt = "DESC" } = req.query;
-    const id = req.params.id;
+    const { take = 10, page = 1, order__createdAt = "DESC" } = req.query;
+    const id = req.user.id;
 
     if (!id) {
       return res.status(400).json({ error: "User ID is required" });
