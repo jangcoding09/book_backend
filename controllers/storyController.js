@@ -300,7 +300,12 @@ const appendStoryContent = async (req, res) => {
 const deleteStory = async (req, res) => {
   try {
     const id = req.params.id;
+    const userId = req.user.id;
 
+    const user = await User.findByPk(userId);
+    if (user.role === "ADMIN") {
+      return res.status(403).send({ error: "Admin cannot delete story" });
+    }
     const story = await Story.findByPk(id);
     if (!story) {
       return res.status(404).send({ error: "Story not found" });
