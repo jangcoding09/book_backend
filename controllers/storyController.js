@@ -310,31 +310,34 @@ const deleteStory = async (req, res) => {
     if (!story) {
       return res.status(404).send({ error: "Story not found" });
     }
-    const images = await Image.findAll({
-      where: {
-        id: {
-          [Op.in]: story.imageIds,
-        },
-      },
-    });
 
-    for (const image of images) {
-      try {
-        const file = bucket.file(image.fbPath);
-        await file.delete();
-      } catch (error) {
-        console.error("Error deleting image from Firebase Storage:", error);
+    if (story.imageIds && story.imageIds.length > 0) {
+      const images = await Image.findAll({
+        where: {
+          id: {
+            [Op.in]: story.imageIds,
+          },
+        },
+      });
+
+      for (const image of images) {
+        try {
+          const file = bucket.file(image.fbPath);
+          await file.delete();
+        } catch (error) {
+          console.error("Error deleting image from Firebase Storage:", error);
+        }
       }
-    }
-    await Image.destroy({
-      where: {
-        id: {
-          [Op.in]: story.imageIds,
+      await Image.destroy({
+        where: {
+          id: {
+            [Op.in]: story.imageIds,
+          },
         },
-      },
-    });
-    await story.destroy();
+      });
+    }
 
+    await story.destroy();
     res.status(204).send();
   } catch (error) {
     res.status(500).send({ error: error.message });

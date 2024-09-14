@@ -179,38 +179,38 @@ const deletebook = async (req, res) => {
     if (!book) {
       return res.status(404).send({ error: "Book not found" });
     }
-
-    // 관련 이미지를 찾습니다
-    const images = await Image.findAll({
-      where: {
-        id: {
-          [Op.in]: book.imageIds,
+    if (book.imageIds && book.imageIds.length > 0) {
+      // 관련 이미지를 찾습니다
+      const images = await Image.findAll({
+        where: {
+          id: {
+            [Op.in]: book.imageIds,
+          },
         },
-      },
-    });
+      });
 
-    // 이미지들을 Firebase Storage에서 삭제합니다
-    for (const image of images) {
-      try {
-        const file = bucket.file(image.fbPath); // `fbPath`는 Firebase Storage에서 파일의 경로를 나타냅니다
-        await file.delete();
-      } catch (deleteError) {
-        console.error(
-          `Error deleting file ${image.fbPath}:`,
-          deleteError.message
-        );
+      // 이미지들을 Firebase Storage에서 삭제합니다
+      for (const image of images) {
+        try {
+          const file = bucket.file(image.fbPath); // `fbPath`는 Firebase Storage에서 파일의 경로를 나타냅니다
+          await file.delete();
+        } catch (deleteError) {
+          console.error(
+            `Error deleting file ${image.fbPath}:`,
+            deleteError.message
+          );
+        }
       }
-    }
 
-    // 데이터베이스에서 이미지를 삭제합니다
-    await Image.destroy({
-      where: {
-        id: {
-          [Op.in]: book.imageIds,
+      // 데이터베이스에서 이미지를 삭제합니다
+      await Image.destroy({
+        where: {
+          id: {
+            [Op.in]: book.imageIds,
+          },
         },
-      },
-    });
-
+      });
+    }
     await book.destroy();
     res.send({ message: "Book deleted successfully" });
   } catch (error) {
