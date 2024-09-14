@@ -2,7 +2,12 @@ const { Story } = require("../models");
 const { v4: isUUID } = require("uuid");
 const { fetchImagesForStory } = require("./fetchImagesForStory");
 const getMyStories = async (req, res) => {
-  const { take = 10, page = 1, order__createdAt = "DESC" } = req.query;
+  const {
+    take = 10,
+    page = 1,
+    order__createdAt = "DESC",
+    ismypage,
+  } = req.query;
   const userId = req.params.userId;
   console.log(userId, "userId............");
   if (!userId) {
@@ -17,12 +22,14 @@ const getMyStories = async (req, res) => {
       message: "잘못된 사용자 ID 형식입니다.",
     });
   }
+  let where =
+    ismypage === true
+      ? { userId: userId }
+      : { userId: userId, isSecret: false };
 
   try {
     const stories = await Story.findAll({
-      where: {
-        userId: userId,
-      },
+      where,
       order: [["createdAt", order__createdAt]],
       limit: parseInt(take),
       offset: (page - 1) * take,
