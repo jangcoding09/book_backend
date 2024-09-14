@@ -4,6 +4,7 @@ const { fetchImagesForStory } = require("./fetchImagesForStory");
 const getBestStories = async (req, res) => {
   try {
     const bestStories = await Story.findAll({
+      where: { isSecret: false },
       limit: 10,
       order: [["likeCount", "DESC"]],
     });
@@ -36,12 +37,10 @@ const getBestStories = async (req, res) => {
 
 const getRandomStories = async (req, res) => {
   try {
-    // 1. 전체 스토리 수 확인
     const totalCount = await Story.count();
 
-    // 2. 무작위로 선택할 인덱스 생성
     const randomIndexes = [];
-    const limit = 10; // 가져올 데이터 개수
+    const limit = 10;
     while (randomIndexes.length < limit) {
       const randomIndex = Math.floor(Math.random() * totalCount);
       if (!randomIndexes.includes(randomIndex)) {
@@ -49,17 +48,26 @@ const getRandomStories = async (req, res) => {
       }
     }
 
-    // 3. 선택된 인덱스의 데이터 가져오기
     const randomStories = await Promise.all(
       randomIndexes.map(async (index) => {
-        const story = await Story.findOne({ offset: index });
-        return story;
+        try {
+          const story = await Story.findOne({
+            where: { isSecret: false },
+            offset: index,
+          });
+          if (!story) throw new Error(`Story not found at index ${index}`);
+          return story;
+        } catch (error) {
+          console.error(`Error fetching story at index ${index}:`, error);
+          return null;
+        }
       })
     );
 
-    // 4. 각 스토리에 이미지 데이터 추가
+    const validStories = randomStories.filter((story) => story !== null);
+
     const storiesWithImages = await Promise.all(
-      randomStories.map(async (story) => {
+      validStories.map(async (story) => {
         const images = await fetchImagesForStory(story);
         return {
           id: story.id,
@@ -70,6 +78,7 @@ const getRandomStories = async (req, res) => {
           updatedAt: story.updatedAt,
           authorName: story.authorName,
           userId: story.userId,
+          clicks: story.clicks,
           images,
         };
       })
@@ -85,6 +94,7 @@ const getRandomStories = async (req, res) => {
     res.status(500).json({ error: "Failed to get random stories" });
   }
 };
+
 module.exports = {
   getBestStories,
   getRandomStories,
