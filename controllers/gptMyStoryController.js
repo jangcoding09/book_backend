@@ -23,7 +23,7 @@ const getMyStories = async (req, res) => {
     });
   }
   let where =
-    ismypage === true
+    ismypage === "true"
       ? { userId: userId }
       : { userId: userId, isSecret: false };
 
