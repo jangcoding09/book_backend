@@ -19,7 +19,7 @@ router.post(
       const imageRecord = {
         path: uploadResult.publicUrl,
         fbPath: uploadResult.filePath,
-        order: 1,
+        order: index + 1,
         type: file.type,
         size: file.size,
         name: file.originalname,
@@ -73,8 +73,7 @@ const removeImage = async (path) => {
     console.error("Error deleting image:", error);
   }
 };
-//이미지 삭제(imageId를 받아서 처리)
-//이미지 삭제(type과 id를 받아서 처리)
+
 router.delete("/temp/:type/:id/:imageId", async (req, res) => {
   try {
     const { type, id, imageId } = req.params;

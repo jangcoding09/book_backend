@@ -290,7 +290,7 @@ const appendStoryContent = async (req, res) => {
       messages: [{ role: "user", content: prompt }],
     });
 
-    const gptResponse = completion.choices[0].message.content;
+    const gptResponse = "\n" + completion.choices[0].message.content;
     res.status(200).send({ content: gptResponse });
   } catch (error) {
     res.status(500).send({ error: error.message });
