@@ -34,6 +34,30 @@ router.post(
     }
   }
 );
+router.post("/temp/editor", upload.single("editorImage"), async (req, res) => {
+  try {
+    const file = req.file;
+    if (!file) {
+      return res.status(400).send({ error: "No files uploaded" });
+    }
+    const uploadResult = await uploadImage(file);
+
+    const imageRecord = {
+      path: uploadResult.publicUrl,
+      fbPath: uploadResult.filePath,
+      type: file.mimetype,
+      size: file.size,
+      name: file.originalname,
+    };
+    const uploadedImage = await Image.create(imageRecord);
+    res
+      .status(200)
+      .send({ imageId: uploadedImage.id, imagePath: uploadedImage.path });
+  } catch (error) {
+    console.error("Error uploading images:", error);
+    res.status(500).send({ error: error.message });
+  }
+});
 router.post("/temp", upload.array("images", 10), async (req, res) => {
   try {
     const files = req.files;
@@ -65,6 +89,7 @@ router.post("/temp", upload.array("images", 10), async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 });
+
 const removeImage = async (path) => {
   try {
     await bucket.file(path).delete();
