@@ -182,7 +182,7 @@ const changeStoryWithGPT = async (req, res) => {
     }
 
     const fullPrompt = existingStory
-      ? `다음은 기존 내용입니다:\n\n${existingStory.content}\n\n사용자의 요청: ${userRequest}\n\n 바꾸고 싶은 이야기: ${userText}\n\n위 내용을 바탕으로 사용자의 요청에 맞게 바꾸고 싶은 이야기를 개선해주세요. 개선한 부분만 제공하고 html형태로 응답을 제공해주세요..`
+      ? `다음은 기존 내용입니다:\n\n${existingStory.content}\n\n사용자의 요청: ${userRequest}\n\n 바꾸고 싶은 이야기: ${userText}\n\n위 내용을 바탕으로 사용자의 요청에 맞게 바꾸고 싶은 이야기를 개선해주세요.  개선한 부분만 텍스트로 제공해주세요.`
       : userText;
 
     const completion = await openai.chat.completions.create({
@@ -286,7 +286,7 @@ const appendStoryContent = async (req, res) => {
     }
 
     // Append new content to the existing content
-    let prompt = `기존이야기:${story.content}\n\n 추가하고 싶은 이야기:${userRequest}\n\n위 줄거리에 이어서 추가하고싶은 이야기를 추가해주세요. 추가한 내용만 제공하고 html형태로 응답해주세요.`;
+    let prompt = `기존이야기:${story.content}\n\n 추가하고 싶은 이야기:${userRequest}\n\n위 줄거리에 이어서 추가하고싶은 이야기를 추가해주세요. 추가한 내용만 텍스트로 제공해주세요.`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
