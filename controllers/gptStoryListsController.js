@@ -21,6 +21,7 @@ const getBestStories = async (req, res) => {
           authorName: story.authorName,
           userId: story.userId,
           clicks: story.clicks,
+          likeCount: story.likeCount,
           images,
         };
       })
@@ -79,6 +80,7 @@ const getRandomStories = async (req, res) => {
           authorName: story.authorName,
           userId: story.userId,
           clicks: story.clicks,
+          likeCount: story.likeCount,
           images,
         };
       })

@@ -107,6 +107,7 @@ const getMyStory = async (req, res) => {
       isSecret: story.isSecret,
       createdAt: story.createdAt,
       updatedAt: story.updatedAt,
+      likeCount: story.likeCount,
       images: await fetchImagesForStory(story),
     });
   } catch (error) {
