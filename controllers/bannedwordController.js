@@ -36,14 +36,12 @@ const getBannedWords = async (req, res) => {
       offset: parseInt(offset),
     });
     const total = await Bannedword.count();
-    res
-      .status(200)
-      .json({
-        data: bannedwords,
-        total,
-        page: parseInt(page),
-        take: parseInt(take),
-      });
+    res.status(200).json({
+      data: bannedwords,
+      total,
+      page: parseInt(page),
+      take: parseInt(take),
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

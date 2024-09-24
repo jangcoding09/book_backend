@@ -100,6 +100,7 @@ const getMyStory = async (req, res) => {
     }
 
     res.status(200).send({
+      userId: story.userId,
       title: story.title,
       content: story.content,
       category: story.category,
