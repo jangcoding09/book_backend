@@ -1,4 +1,4 @@
-const { Like } = require("../models");
+const { Like, Book } = require("../models");
 
 const getBookLike = async (req, res) => {
   try {
@@ -64,6 +64,11 @@ const addLike = async (req, res) => {
         },
         { transaction }
       );
+
+      await Book.increment("likeCount", {
+        where: { id: bookId },
+        transaction,
+      });
     }
 
     await transaction.commit();
@@ -103,6 +108,11 @@ const removeLike = async (req, res) => {
       if (userIds.length !== updatedUserIds.length) {
         like.userIds = updatedUserIds;
         await like.save({ transaction });
+
+        await Book.decrement("likeCount", {
+          where: { id: bookId },
+          transaction,
+        });
       } else {
         console.log("User has not liked this book");
       }

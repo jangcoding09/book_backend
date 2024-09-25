@@ -8,10 +8,12 @@ const {
   patchcomment,
   deletecomment,
   deleteCommentByRole,
+  getMyComments,
 } = require("../controllers/commentController");
 const authenticate = require("../middleware/authMiddleware");
 router.get("/:bookId", getcommentsForBook);
 router.get("/", getcomments);
+router.get("/my/:userId", authenticate, getMyComments);
 router.post("/:bookId", authenticate, postcomment);
 router.patch("/:bookId/:commentId", authenticate, patchcomment);
 router.delete("/:bookId/:commentId", authenticate, deletecomment);

@@ -200,6 +200,41 @@ const getcomments = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+const getMyComments = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const page = parseInt(req.query.page) || 1;
+    const take = parseInt(req.query.take) || 10;
+
+    if (userId !== req.user.id) {
+      console.log(userId, req.user.id);
+      return res.status(403).json({
+        error: "You do not have permission to view this user's comments",
+      });
+    }
+    const { count, rows } = await Comment.findAndCountAll({
+      where: { userId },
+      include: [
+        {
+          model: Book,
+          as: "book",
+          attributes: ["title", "category"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+      limit: take,
+      offset: (page - 1) * take,
+    });
+
+    res.status(200).json({
+      data: rows,
+      total: count,
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
 module.exports = {
   getcommentsForBook,
   postcomment,
@@ -208,4 +243,5 @@ module.exports = {
   getcomments,
   containsBannedWord,
   deleteCommentByRole,
+  getMyComments,
 };

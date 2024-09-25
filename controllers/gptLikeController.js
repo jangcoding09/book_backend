@@ -50,11 +50,9 @@ const addLike = async (req, res) => {
       console.log(userIds, "userIds");
       if (!userIds.includes(id)) {
         like.userIds = [...userIds, id];
-        console.log(like, "updated");
         likeCount = like.userIds.length;
         await like.save({ transaction });
 
-        // Increment likeCount in Story model
         await Story.increment("likeCount", {
           where: { id: storyId },
           transaction,
