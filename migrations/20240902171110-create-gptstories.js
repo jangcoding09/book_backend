@@ -46,6 +46,11 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false,
         },
+        likeCount: {
+          type: Sequelize.INTEGER,
+          defaultValue: 0,
+          allowNull: false,
+        },
         userId: {
           type: Sequelize.UUID,
           references: {
@@ -57,8 +62,7 @@ module.exports = {
         },
         imageIds: {
           type: Sequelize.JSON,
-          allowNull: false,
-          defaultValue: [],
+          allowNull: true,
         },
       }
     );
