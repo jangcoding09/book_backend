@@ -6,7 +6,10 @@ const sequelize = new Sequelize(process.env.POSTGRES_URL, {
   dialect: "postgres",
   dialectModule: pg,
   dialectOptions: {
-    ssl: true,
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
   },
   pool: {
     max: 5,

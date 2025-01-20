@@ -13,7 +13,10 @@ module.exports = {
     dialect: "postgres",
     dialectModule: require("pg"), // pg 모듈
     dialectOptions: {
-      ssl: true,
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
     },
   },
   production: {
@@ -26,7 +29,10 @@ module.exports = {
     dialect: "postgres",
     dialectModule: require("pg"),
     dialectOptions: {
-      ssl: true,
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
     },
   },
 };
