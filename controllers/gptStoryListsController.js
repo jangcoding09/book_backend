@@ -49,6 +49,9 @@ const getBestStories = async (req, res) => {
 const getRandomStories = async (req, res) => {
   try {
     const totalCount = await Story.count();
+    if (totalCount === 0) {
+      return res.status(404).json({ error: "No stories available" });
+    }
 
     const randomIndexes = [];
     const limit = 10;
