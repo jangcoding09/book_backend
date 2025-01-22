@@ -59,8 +59,8 @@ const getRandomStories = async (req, res) => {
       }
     }
 
-    const randomStories = await Promise.all(
-      randomIndexes.map(async (index) => {
+    const randomStories = await Promise.allSettled(
+      [...randomIndexes].map(async (index) => {
         try {
           const story = await Story.findOne({
             where: { isSecret: false },
@@ -77,35 +77,47 @@ const getRandomStories = async (req, res) => {
         }
       })
     );
+    const validStories = randomStories
+      .filter(
+        (result) => result.status === "fulfilled" && result.value !== null
+      )
+      .map((result) => result.value);
 
-    const validStories = randomStories.filter((story) => story !== null);
     if (validStories.length === 0) {
-      // 유효한 스토리가 없을 경우 500 에러 응답을 빠르게 반환
-      return res.status(500).json({ error: "No valid stories found" });
+      return res.status(404).json({ error: "No valid stories found" });
     }
-    const storiesWithImages = await Promise.all(
+    const storiesWithImages = await Promise.allSettled(
       validStories.map(async (story) => {
-        const images = await fetchImagesForStory(story);
-        return {
-          id: story.id,
-          title: story.title,
-          category: story.category,
-          isSecret: story.isSecret,
-          createdAt: story.createdAt,
-          updatedAt: story.updatedAt,
-          authorName: story.authorName,
-          userId: story.userId,
-          clicks: story.clicks,
-          likeCount: story.likeCount,
-          images,
-        };
+        try {
+          const images = await fetchImagesForStory(story);
+          return {
+            id: story.id,
+            title: story.title,
+            category: story.category,
+            isSecret: story.isSecret,
+            createdAt: story.createdAt,
+            updatedAt: story.updatedAt,
+            authorName: story.authorName,
+            userId: story.userId,
+            clicks: story.clicks,
+            likeCount: story.likeCount,
+            images,
+          };
+        } catch (error) {
+          console.error(`Error fetching images for story ${story.id}:`, error);
+          return null;
+        }
       })
     );
 
+    const finalStories = storiesWithImages
+      .filter(
+        (result) => result.status === "fulfilled" && result.value !== null
+      )
+      .map((result) => result.value);
+
     res.status(200).json({
-      data: {
-        stories: storiesWithImages,
-      },
+      data: { stories: finalStories },
     });
   } catch (error) {
     console.error("Error fetching random stories:", error);
